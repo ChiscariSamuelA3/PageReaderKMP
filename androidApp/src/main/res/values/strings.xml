@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">PageReader</string>
+    <string name="app_subtitle">Extract text from any web page using a CSS selector.</string>
+    <string name="url_label">URL</string>
+    <string name="selector_label">CSS selector</string>
+    <string name="read_button">Read</string>
+    <string name="reading_button">Reading…</string>
+    <string name="result_label">Result</string>
+    <string name="result_placeholder">The extracted text will appear here.</string>
+
+    <string name="error_invalid_url">Please enter a valid URL.</string>
+    <string name="error_insecure_url">Only HTTPS URLs are allowed.</string>
+    <string name="error_invalid_selector">The CSS selector is not valid.</string>
+    <string name="error_network">Network error: %1$s</string>
+    <string name="error_http">The server responded with HTTP %1$d.</string>
+    <string name="error_response_too_large">The page is too large (limit is 2 MB).</string>
+    <string name="error_nothing_found">No text found for \"%1$s\".</string>
 </resources>
