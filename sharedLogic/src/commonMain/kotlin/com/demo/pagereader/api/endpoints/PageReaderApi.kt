@@ -1,6 +1,6 @@
 package com.demo.pagereader.api.endpoints
 
-import com.demo.pagereader.api.PageReaderError
+import com.demo.pagereader.models.PageReaderError
 import io.ktor.client.HttpClient
 import io.ktor.client.request.prepareGet
 import io.ktor.client.statement.HttpResponse

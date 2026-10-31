@@ -1,7 +1,7 @@
 package com.demo.pagereader.util
 
 import com.demo.pagereader.api.endpoints.PageReaderException
-import com.demo.pagereader.api.PageReaderError
+import com.demo.pagereader.models.PageReaderError
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.select.Selector
 

@@ -1,6 +1,4 @@
-package com.demo.pagereader.models
-
-import com.demo.pagereader.ui.ReadStatus
+package com.demo.pagereader.presentation
 
 data class PageState(
     val url: String = "https://example.com",

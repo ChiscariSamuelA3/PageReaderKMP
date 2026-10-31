@@ -1,4 +1,4 @@
-package com.demo.pagereader.screens
+package com.demo.pagereader.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,13 +33,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.demo.pagereader.PageReaderTheme
+import com.demo.pagereader.theme.PageReaderTheme
 import com.demo.pagereader.R
-import com.demo.pagereader.components.SectionCardView
-import com.demo.pagereader.components.errorMessageMapper
-import com.demo.pagereader.models.PageState
-import com.demo.pagereader.ui.PageReaderViewModel
-import com.demo.pagereader.ui.ReadStatus
+import com.demo.pagereader.models.PageReaderError
+import com.demo.pagereader.ui.components.SectionCard
+import com.demo.pagereader.presentation.PageState
+import com.demo.pagereader.presentation.PageReaderViewModel
+import com.demo.pagereader.presentation.ReadStatus
 
 @Composable
 fun PageReaderScreen(
@@ -91,7 +91,7 @@ private fun PageReaderContent(
                 )
             }
 
-            SectionCardView {
+            SectionCard {
                 Text(
                     text = stringResource(R.string.url_label),
                     style = MaterialTheme.typography.labelLarge,
@@ -161,7 +161,7 @@ private fun PageReaderContent(
                 }
             }
 
-            SectionCardView {
+            SectionCard {
                 Text(
                     text = stringResource(R.string.result_label),
                     style = MaterialTheme.typography.labelLarge,
@@ -188,6 +188,17 @@ private fun PageReaderContent(
             }
         }
     }
+}
+
+@Composable
+fun errorMessageMapper(error: PageReaderError): String = when (error) {
+    PageReaderError.InvalidUrl -> stringResource(R.string.error_invalid_url)
+    PageReaderError.InsecureUrl -> stringResource(R.string.error_insecure_url)
+    PageReaderError.InvalidSelector -> stringResource(R.string.error_invalid_selector)
+    is PageReaderError.Network -> stringResource(R.string.error_network, error.reason)
+    is PageReaderError.Http -> stringResource(R.string.error_http, error.code)
+    PageReaderError.ResponseTooLarge -> stringResource(R.string.error_response_too_large)
+    is PageReaderError.NothingFound -> stringResource(R.string.error_nothing_found, error.selector)
 }
 
 @Preview(showBackground = true)

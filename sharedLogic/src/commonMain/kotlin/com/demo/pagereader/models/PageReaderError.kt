@@ -1,4 +1,4 @@
-package com.demo.pagereader.api
+package com.demo.pagereader.models
 
 sealed interface PageReaderError {
     data object InvalidUrl : PageReaderError

@@ -1,4 +1,4 @@
-package com.demo.pagereader.ui
+package com.demo.pagereader.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,8 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.demo.pagereader.api.endpoints.PageReaderException
 import com.demo.pagereader.api.DependencyContainer
-import com.demo.pagereader.api.PageReaderError
-import com.demo.pagereader.models.PageState
+import com.demo.pagereader.models.PageReaderError
 import com.demo.pagereader.repositories.PageRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

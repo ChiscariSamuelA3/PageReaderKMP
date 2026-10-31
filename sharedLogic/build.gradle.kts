@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -6,13 +7,16 @@ plugins {
 }
 
 kotlin {
+    val xcFramework = XCFramework("PageReaderKit")
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "SharedLogic"
+            baseName = "PageReaderKit"
             isStatic = true
+            xcFramework.add(this)
         }
     }
     android {
@@ -22,12 +26,7 @@ kotlin {
        compilerOptions {
            jvmTarget = JvmTarget.JVM_11
        }
-       androidResources {
-           enable = true
-       }
-       withHostTest {
-           isIncludeAndroidResources = true
-       }
+       withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {
