@@ -26,6 +26,8 @@ internal class PageReaderApi(private val client: HttpClient) {
     } catch (e: IOException) {
         // Timeouts, DNS, TLS, connection errors
         throw PageReaderException(PageReaderError.Network(e.message ?: "Unknown network error"))
+    } catch (e: Exception) {
+        throw PageReaderException(PageReaderError.InvalidUrl)
     }
 
     private suspend fun HttpResponse.readPage(): String {

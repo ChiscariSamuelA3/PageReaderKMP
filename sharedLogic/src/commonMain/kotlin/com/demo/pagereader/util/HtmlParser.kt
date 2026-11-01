@@ -6,6 +6,9 @@ import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.select.Selector
 
 internal object HtmlParser {
+
+    const val MAX_EXTRACTED_TEXT_LENGTH = 10_000
+
     fun extractText(html: String, selector: String): String {
         val query = selector.trim()
         if (query.isEmpty()) throw PageReaderException(PageReaderError.InvalidSelector)
@@ -18,6 +21,7 @@ internal object HtmlParser {
 
         val text = elements.eachText().joinToString(separator = "\n")
         if (text.isBlank()) throw PageReaderException(PageReaderError.NothingFound(query))
-        return text
+
+        return text.take(MAX_EXTRACTED_TEXT_LENGTH)
     }
 }

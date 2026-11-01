@@ -9,15 +9,16 @@ internal object UrlNormalizer {
 
     fun normalize(input: String): String {
         val trimmed = input.trim()
+
         if (trimmed.startsWith("http://", ignoreCase = true)) {
             throw PageReaderException(PageReaderError.InsecureUrl)
         }
 
-        val withScheme = when {
-            trimmed.startsWith("https://", ignoreCase = true) -> trimmed
-            else -> throw PageReaderException(PageReaderError.InvalidUrl)
+        if (!trimmed.startsWith("https://", ignoreCase = true)) {
+            throw PageReaderException(PageReaderError.InvalidUrl)
         }
-        val url = parseUrl(withScheme)
+
+        val url = parseUrl(trimmed)
 
         if (url == null || url.protocol != URLProtocol.HTTPS || url.host.isBlank() || ' ' in trimmed) {
             throw PageReaderException(PageReaderError.InvalidUrl)
