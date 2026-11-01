@@ -1,35 +1,18 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# PageReader
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+* Kotlin Multiplatform module that downloads a web page over HTTPS and extracts text with a
+CSS selector (e.g. `title`, `h1`). Used by a native Android app and a native iOS app.
 
-* [/sharedLogic](./sharedLogic/src) is for the code that will be shared between app targets in the project.
-  The most important subfolder is [commonMain](./sharedLogic/src/commonMain/kotlin). If preferred, you
-  can add code to the platform-specific folders here too.
+* MVVM, with all logic in one shared module:
+`UI → PageReaderViewModel (StateFlow) → PageReaderRepository → UrlNormalizer / PageReaderApi / HtmlParser`
 
-* [/sharedUI](./sharedUI/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./sharedUI/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./sharedUI/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./sharedUI/src/jvmMain/kotlin)
-    folder is the appropriate location.
+* **Shared:** ViewModel, state, networking, HTML parsing, validation, errors, unit tests.
+* **Native:** the UI (Compose on Android, SwiftUI on iOS) and the HTTP engine (OkHttp / Darwin). On iOS, `PageReaderViewModelOwner` (Kotlin, `iosMain`) owns the shared ViewModel, and `PageReaderViewModelWrapper` (Swift `ObservableObject`) mirrors its `StateFlow` into `@Published state` for SwiftUI and clears it in `deinit`.
 
-### Running the apps
+* Kotlin Multiplatform, Ktor, Ksoup, Coroutines/StateFlow, androidx ViewModel (multiplatform),
+Compose + Material 3, SwiftUI, kotlin-test. Shipped as a Maven artifact and an XCFramework.
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
-
-- Android app: `./gradlew :androidApp:assembleDebug`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
-
-### Running tests
-
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
-
-- Android tests: `./gradlew :sharedUI:testAndroidHostTest :sharedLogic:testAndroidHostTest`
-- iOS tests: `./gradlew :sharedLogic:iosSimulatorArm64Test`
-
----
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+- HTTPS only, enforced in code and by the platform. Redirects cannot downgrade to HTTP.
+- No WebView: the HTML is never rendered, only plain text extracted by a real parser.
+- Timeouts (10 s / 15 s) and a 2 MB page limit, enforced while streaming.
+- Strict URL and selector validation, with typed errors (`PageReaderError`) instead of crashes.
